@@ -1,26 +1,26 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ISong } from 'src/interface/model';
+import { music } from 'src/music';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'music-player-ng';
-
 
   currentProgress$ = new BehaviorSubject(0);
   currentTime$ = new Subject();
 
-  @ViewChild('player', {static: true}) player!: ElementRef;
+  @ViewChild('player', { static: true }) player!: ElementRef;
 
   songs: ISong[] = [];
 
   audio = new Audio();
   isPlaying = false;
-  activeSong!: ISong
+  activeSong!: ISong;
   durationTime: string = '0';
 
   ngOnInit() {
@@ -44,29 +44,37 @@ export class AppComponent implements OnInit{
   }
 
   onTimeUpdate() {
-
     // Set song duration time
     if (!this.durationTime) {
       this.setSongDuration();
     }
 
     // Emit converted audio currenttime in user friendly ex. 01:15
-    const currentMinutes = this.generateMinutes(this.player.nativeElement.currentTime);
-    const currentSeconds = this.generateSeconds(this.player.nativeElement.currentTime);
-    this.currentTime$.next(this.generateTimeToDisplay(currentMinutes, currentSeconds));
-
+    const currentMinutes = this.generateMinutes(
+      this.player.nativeElement.currentTime
+    );
+    const currentSeconds = this.generateSeconds(
+      this.player.nativeElement.currentTime
+    );
+    this.currentTime$.next(
+      this.generateTimeToDisplay(currentMinutes, currentSeconds)
+    );
 
     // Emit amount of song played percents
-    const percents = this.generatePercentage(this.player.nativeElement.currentTime, this.player.nativeElement.duration);
+    const percents = this.generatePercentage(
+      this.player.nativeElement.currentTime,
+      this.player.nativeElement.duration
+    );
     if (!isNaN(percents)) {
       this.currentProgress$.next(percents);
     }
-
   }
 
   // Play song that comes after active song
   playNextSong(): void {
-    const nextSongIndex = this.songs.findIndex((song) => song.id === this.activeSong.id + 1);
+    const nextSongIndex = this.songs.findIndex(
+      (song) => song.id === this.activeSong.id + 1
+    );
 
     if (nextSongIndex === -1) {
       this.playSong(this.songs[0]);
@@ -77,7 +85,9 @@ export class AppComponent implements OnInit{
 
   // Play song that comes before active song
   playPreviousSong(): void {
-    const prevSongIndex = this.songs.findIndex((song) => song.id === this.activeSong.id - 1);
+    const prevSongIndex = this.songs.findIndex(
+      (song) => song.id === this.activeSong.id - 1
+    );
     if (prevSongIndex === -1) {
       this.playSong(this.songs[this.songs.length - 1]);
     } else {
@@ -87,11 +97,18 @@ export class AppComponent implements OnInit{
 
   // Calculate song duration and set it to user friendly format, ex. 01:15
   setSongDuration(): void {
-    const durationInMinutes = this.generateMinutes(this.player.nativeElement.duration);
-    const durationInSeconds = this.generateSeconds(this.player.nativeElement.duration);
+    const durationInMinutes = this.generateMinutes(
+      this.player.nativeElement.duration
+    );
+    const durationInSeconds = this.generateSeconds(
+      this.player.nativeElement.duration
+    );
 
     if (!isNaN(this.player.nativeElement.duration)) {
-      this.durationTime = this.generateTimeToDisplay(durationInMinutes, durationInSeconds);
+      this.durationTime = this.generateTimeToDisplay(
+        durationInMinutes,
+        durationInSeconds
+      );
     }
   }
 
@@ -106,7 +123,10 @@ export class AppComponent implements OnInit{
     return secsFormula < 10 ? '0' + String(secsFormula) : secsFormula;
   }
 
-  generateTimeToDisplay(currentMinutes: number, currentSeconds: string | number): string {
+  generateTimeToDisplay(
+    currentMinutes: number,
+    currentSeconds: string | number
+  ): string {
     return `${currentMinutes}:${currentSeconds}`;
   }
 
@@ -123,23 +143,6 @@ export class AppComponent implements OnInit{
   }
 
   getListOfSongs(): ISong[] {
-    return [
-      {
-        id: 1,
-        title: 'Silver-Spoon.mp3',
-        path: './assets/Silver-Spoon_.mp3'
-      },
-      {
-        id: 2,
-        title: 'Numb (Official Video) - Linkin Park.mp3',
-        path: './assets/Numb (Official Video) - Linkin Park.mp3'
-      },
-      {
-        id: 3,
-        title: 'System Of A Down - Toxicity (Official Video).mp3',
-        path: './assets/System Of A Down - Toxicity (Official Video).mp3'
-      }
-    ];
+    return music;
   }
 }
-

@@ -1,9 +1,49 @@
-.progress{
+.progress {
     height: 0.1rem;
-}
-.container{
+  }
+  .container {
+    /* margin-top: 5rem; */
     display: flex;
     justify-content: center;
-    align-items: center;
-}
-
+    max-width: 70%;
+    max-height: 70%;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+  .img-thumbnail {
+    max-width: 100%;
+    height: auto;
+    border: 0;
+    border-radius: 2rem;
+    /* box-shadow: 1px 1px 5px 0px; */
+    padding: 0px;
+  }
+  .addBtn {
+    margin: 2rem 0rem;
+    border-radius: 1rem;
+  }
+  .control{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 0px;
+  }
+  
+  .next{
+    font-size: 50px;
+    margin-right: 10%;
+    border:0px
+  }
+  .controlIcon{
+    text-shadow: 1px 1px 6px;
+  }
+  .previous{
+    font-size: 50px;
+    margin-left: 10%;
+  }
+  
+  .play{
+    font-size: 80px;
+  }
+  

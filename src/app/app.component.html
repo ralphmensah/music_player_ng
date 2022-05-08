@@ -1,16 +1,21 @@
 <div class="ui container center-screen">
   <div class="justify-content-center">
-    <button class="btn btn-primary"><i class="plus fa-solid fa-plus"></i></button>
+    <button class="btn btn-primary addBtn">
+      <i class="plus fa-solid fa-plus"></i>
+    </button>
     <div>
-    <div class="card">
-      <img src="'../../assets/logo.png" alt="..." class="img-thumbnail">
-    </div>
+      <div>
+        <img
+          src="http://www.scottishculture.org/themes/scottishculture/images/music_placeholder.png"
+          alt="..."
+          class="img-thumbnail"
+        />
+      </div>
 
       <h4>{{ activeSong?.title }}</h4>
     </div>
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
         <div class="row">
           <div class="col-6 text-left">
             {{ currentTime$ | async }}
@@ -19,23 +24,58 @@
             {{ durationTime }}
           </div>
         </div>
-      </div>
-      <div class="progress">
-        <div class="progress-bar bg-muted" role="progressbar" [ngStyle]="{'width': (currentProgress$ | async) + '%'}"
-          [attr.aria-valuenow]="(currentProgress$ | async) " aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-      <br>
-      <!-- control btns -->
-      <button type="button" class="btn btn-outline-dark" (click)="playPreviousSong()"><i
-          class="fa-solid fa-backward"></i></button>
-      <button type="button" class="btn btn-outline-dark" *ngIf="isPlaying" (click)="player.pause()"><i
-          class="fa-solid fa-pause"></i></button>
-      <button type="button" class="btn btn-outline-dark" *ngIf="!isPlaying" (click)="playSong(activeSong)"><i
-          class="fa-solid fa-play"></i></button>
+        <div class="progress">
+          <div
+            class="progress-bar bg-muted"
+            role="progressbar"
+            [ngStyle]="{ width: (currentProgress$ | async) + '%' }"
+            [attr.aria-valuenow]="currentProgress$ | async"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
 
-      <button type="button" class="btn btn-outline-dark" (click)="playNextSong()"><i
-          class="fa-solid fa-forward"></i></button>
+        <!-- control btns -->
+        <div class="control">
+          <button
+            type="button"
+            class="btn previous controlIcon"
+            (click)="playPreviousSong()"
+          >
+            <i class="fa-solid fa-backward"></i>
+          </button>
+          <button
+            type="button"
+            class="btn play controlIcon"
+            *ngIf="isPlaying"
+            (click)="player.pause()"
+          >
+            <i class="fa-solid fa-pause"></i>
+          </button>
+          <button
+            type="button"
+            class="btn play controlIcon"
+            *ngIf="!isPlaying"
+            (click)="playSong(activeSong)"
+          >
+            <i class="fa-solid fa-play"></i>
+          </button>
+
+          <button type="button" class="btn next controlIcon" (click)="playNextSong()">
+            <i class="fa-solid fa-forward "></i>
+          </button>
+        </div>
+
+        <div class="progress">
+          <div
+            class="progress-bar bg-muted"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+      </div>
     </div>
   </div>
+  <audio #player (timeupdate)="onTimeUpdate()" (pause)="onPause()"></audio>
 </div>
-<audio #player (timeupdate)="onTimeUpdate()" (pause)="onPause()"></audio>
